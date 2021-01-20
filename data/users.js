@@ -6,7 +6,7 @@ const password = '$2a$10$rQEY9CNl4OC.UtiyRgKnZeW0KaWnEANMKAxfIpNDQCgiCybm3G1fy'
 casual.define('users', () => ({
   id: casual.uuid,
   email: casual.email,
-  password: password,
+  password,
   firstName: casual.first_name,
   lastName: casual.last_name,
   // birth: casual.date(),
@@ -14,7 +14,6 @@ casual.define('users', () => ({
   age: casual.integer(1, 100),
 
 }))
-
 
 const userData = []
 

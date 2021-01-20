@@ -1,4 +1,3 @@
-
 const password = '$2a$10$rQEY9CNl4OC.UtiyRgKnZeW0KaWnEANMKAxfIpNDQCgiCybm3G1fy'
 
 const casual = require('casual')

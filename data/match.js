@@ -6,7 +6,7 @@ casual.define('match', ({ user1Id, user2Id }) => ({
   user1Id,
   user2Id,
 }))
- 
+
 const matches = []
 
 for (let i = 0; i < 20; ++i) {
