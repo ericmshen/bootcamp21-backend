@@ -12,6 +12,7 @@ casual.define('users', () => ({
   birthdate: casual.date(),
   phoneNumber: casual.phone,
   age: casual.integer(1, 100),
+  bio: casual.sentence,
 }))
 
 const userData = []
