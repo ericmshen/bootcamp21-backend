@@ -8,15 +8,15 @@ casual.define('relation', ({ personId, songId }) => ({
   songId,
 }))
 
-const relations = []
+const usersongs = []
 
 // problem: there will be redundant pairs
 for (let i = 0; i < 50; ++i) {
   const personId = casual.random_element(userData).id
   const songId = casual.random_element(songData).id
 
-  relations.push(casual.relation({ personId, songId }))
+  usersongs.push(casual.relation({ personId, songId }))
 }
 
 // console.log(relations)
-module.exports = relations
+module.exports = usersongs

@@ -1,6 +1,6 @@
 const { createTableIfNotExists } = require('../helpers')
 
-exports.up = async knex => createTableIfNotExists(knex, 'relations', table => {
+exports.up = async knex => createTableIfNotExists(knex, 'matches', table => {
   table
     .uuid('id')
     .notNullable()
@@ -8,16 +8,16 @@ exports.up = async knex => createTableIfNotExists(knex, 'relations', table => {
     .defaultTo(knex.raw('uuid_generate_v4()'))
 
   table
-    .uuid('personId')
+    .uuid('user1Id')
     .references('users.id')
     .onUpdate('CASCADE')
     .onDelete('CASCADE')
 
   table
-    .uuid('songId')
-    .references('songs.id')
+    .uuid('user2Id')
+    .references('users.id')
     .onUpdate('CASCADE')
     .onDelete('CASCADE')
 })
 
-exports.down = async knex => knex.schema.dropTableIfExists('relations')
+exports.down = async knex => knex.schema.dropTableIfExists('matches')

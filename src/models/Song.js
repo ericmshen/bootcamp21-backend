@@ -1,24 +1,24 @@
 const { BelongsToOneRelation } = require('objection')
 const BaseModel = require('./BaseModel')
+const Artist = require('./Artist')
 
-class Artist extends BaseModel {
-    static get tableName() {
-      return 'songs'
-    }
-  
-    static get relationMappings() {
-      const Artist = require('./Artist')
-      return {
-        artistOwner: {
-          relation: BelongsToOneRelation,
-          modelClass: Artist,
-          join: {
-            from: 'songs.artistId',
-            to: 'artists.id',
-          },
+class Song extends BaseModel {
+  static get tableName() {
+    return 'songs'
+  }
+
+  static get relationMappings() {
+    return {
+      artistOwner: {
+        relation: BelongsToOneRelation,
+        modelClass: Artist,
+        join: {
+          from: 'songs.artistId',
+          to: 'artists.id',
         },
-      }
+      },
     }
   }
-  
-  module.exports = Artist
+}
+
+module.exports = Song
