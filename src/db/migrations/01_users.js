@@ -15,7 +15,7 @@ exports.up = async knex => createTableIfNotExists(knex, 'users', table => {
   table.string('password').notNullable()
   table.string('firstName').notNullable()
   table.string('lastName').notNullable()
-//   table.date('birth')
+  table.date('birthdate')
   table.string('phoneNumber').notNullable()
   table.integer('age').notNullable()
 })

@@ -9,7 +9,7 @@ casual.define('users', () => ({
   password,
   firstName: casual.first_name,
   lastName: casual.last_name,
-  // birth: casual.date(),
+  birthdate: casual.date(),
   phoneNumber: casual.phone,
   age: casual.integer(1, 100),
 
