@@ -19,6 +19,7 @@ module.exports = gql`
     birthday: Date
     phoneNumber: String!
     age: Int!
+    bio: String
     topGenres: [String!]
     topSongs: [Song!]
     topArtists: [Artist!]
@@ -33,6 +34,7 @@ module.exports = gql`
     birthday: Date
     phoneNumber: String!
     age: Int!
+    bio: String
   }
 
   type Song {
@@ -44,7 +46,7 @@ module.exports = gql`
 
   input AddSongInput {
     title: String!
-    artist: Artist!
+    artistId: ID!
     genre: String
   }
 
@@ -67,5 +69,6 @@ module.exports = gql`
     email: String!
     password: String!
   }
+
   scalar Date
 `

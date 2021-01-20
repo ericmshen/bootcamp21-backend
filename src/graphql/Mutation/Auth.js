@@ -4,8 +4,7 @@ const {
   hashPassword, comparePassword, createToken,
 } = require('../../lib/auth')
 
-
-const login = async (obj, { email, password }) => {
+const login = async (_obj, { email, password }) => {
   const user = await User.query().findOne({
     email,
   })
@@ -18,12 +17,11 @@ const login = async (obj, { email, password }) => {
     throw new UserInputError('Invalid email or password')
   }
 
-
   // If successful login, set authentication information
   const payload = {
     id: user.id,
   }
-  const token = createToken(payload)
+  const token = createToken({ payload })
 
   return { user, token }
 }
