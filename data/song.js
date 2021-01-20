@@ -5,6 +5,7 @@ casual.define('song', artistId => ({
   id: casual.uuid,
   artistId,
   title: casual.word,
+  genre: casual.safe_color_name,
 }))
 
 const songsData = []
