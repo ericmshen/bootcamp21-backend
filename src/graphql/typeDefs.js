@@ -1,46 +1,71 @@
-// const { gql } = require('apollo-server-express')
+const { gql } = require('apollo-server-express')
 
-// module.exports = gql`
-//   type Mutation {
-//     # login(email: String!, password: String!): AuthReturn!
-//     # register(input: RegisterInput!): AuthReturn!
-//   }
+module.exports = gql`
+  type Mutation {
+    # login(email: String!, password: String!): AuthReturn!
+    # register(input: RegisterInput!): AuthReturn!
+  }
 
-//   type Query {
-//     # welcome: String!
-//   }
+  type Query {
+    # welcome: String!
+  }
 
-//   # user
-//   type User {
-//     id: ID!
-//     email: String!
-//     password: String!
-//     firstName: String!
-//     lastName: String!
-//     birthday: Date
-//     phoneNumber: String!
-//     age: Int!
-//     genreDescription: [String!]
-//     topSongs: [Song!]
-//     matches: [User!]
-    
+  type User {
+    id: ID!
+    email: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    birthday: Date
+    phoneNumber: String!
+    age: Int!
+    topGenres: [String!]
+    topSongs: [Song!]
+    topArtists: [Artist!]
+    matches: [User!]
+  }
 
-//     # createdAt: String!
-//     # updatedAt: String!
-//   }
+  input AddUserInput {
+    email: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+    birthday: Date
+    phoneNumber: String!
+    age: Int!
+  }
 
-//   # user
-//   type Song{
+  type Song {
+    id: ID!
+    title: String!
+    artist: Artist!
+    genre: String
+  }
 
-//   }
+  input AddSongInput {
+    title: String!
+    artist: Artist!
+    genre: String
+  }
 
-//   type AuthReturn {
-//     token: String!
-//     user: User!
-//   }
+  type Artist {
+    id: ID!
+    name: String!
+    songs: [Song!]
+  }
 
-//   input RegisterInput {
-//     email: String!
-//     password: String!
-//   }
-// `
+  input AddArtistInput {
+    name: String!
+  }
+
+  type AuthReturn {
+    token: String!
+    user: User!
+  }
+
+  input RegisterInput {
+    email: String!
+    password: String!
+  }
+  scalar Date
+`

@@ -1,4 +1,4 @@
-const { decodeToken } = require('../lib/auth')
+const { decodeToken } = require('./auth')
 const User = require('../models/User')
 
 // The method exported here sets the context for all resolvers and refreshes tokens

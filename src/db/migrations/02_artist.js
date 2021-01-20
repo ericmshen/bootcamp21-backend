@@ -7,7 +7,6 @@ exports.up = async knex => createTableIfNotExists(knex, 'artists', table => {
     .primary()
     .defaultTo(knex.raw('uuid_generate_v4()'))
 
-
   table.string('name').notNullable()
 })
 
