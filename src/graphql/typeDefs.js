@@ -40,9 +40,10 @@ module.exports = gql`
   type User {
     id: ID!
     email: String!
-    password: String!
-    firstName: String!
-    lastName: String!
+    username: String
+    password: String
+    firstName: String
+    lastName: String
     birthday: Date
     phoneNumber: String
     age: Int
@@ -60,9 +61,10 @@ module.exports = gql`
 
   input AddUserInput {
     email: String!
-    password: String!
-    firstName: String!
-    lastName: String!
+    username: String!
+    password: String
+    firstName: String
+    lastName: String
     birthday: Date
     phoneNumber: String!
     age: Int!

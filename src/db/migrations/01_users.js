@@ -7,17 +7,19 @@ exports.up = async knex => createTableIfNotExists(knex, 'users', table => {
     .primary()
     .defaultTo(knex.raw('uuid_generate_v4()'))
 
+  table.string('username')
+
   table
     .string('email')
     .unique()
     .notNullable()
 
-  table.string('password').notNullable()
-  table.string('firstName').notNullable()
-  table.string('lastName').notNullable()
+  table.string('password')
+  table.string('firstName')
+  table.string('lastName')
   table.date('birthdate')
-  table.string('phoneNumber').notNullable()
-  table.integer('age').notNullable()
+  table.string('phoneNumber')
+  table.integer('age')
   table.string('bio')
 })
 
