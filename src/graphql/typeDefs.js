@@ -48,6 +48,9 @@ module.exports = gql`
     phoneNumber: String
     age: Int
     bio: String
+    followers: Int
+    imageurl: String
+    profileurl: String
     songs: [Usersong!]
     artists: [Userartist!]
     genres: [Usergenre!]
@@ -69,6 +72,9 @@ module.exports = gql`
     phoneNumber: String!
     age: Int!
     bio: String
+    followers: Int
+    imageurl: String
+    profileurl: String
   }
 
   type Usersong{

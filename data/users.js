@@ -14,6 +14,9 @@ casual.define('user', () => ({
   phoneNumber: casual.phone,
   age: casual.integer(1, 100),
   bio: casual.sentence,
+  followers: casual.integer(1, 100),
+  imageurl: casual.url,
+  profileurl: casual.url,
 }))
 
 const userData = []

@@ -21,6 +21,10 @@ exports.up = async knex => createTableIfNotExists(knex, 'users', table => {
   table.string('phoneNumber')
   table.integer('age')
   table.string('bio')
+
+  table.integer('followers')
+  table.string('imageurl')
+  table.string('profileurl')
 })
 
 exports.down = async knex => knex.schema.dropTableIfExists('users')

@@ -28,7 +28,8 @@ const login = async (_obj, { email, password }) => {
 
 const register = async (_obj, {
   input: {
-    email, password, firstName, lastName, birthday, phoneNumber, age, bio,
+    email, password, username, firstName, lastName, birthday,
+    phoneNumber, age, bio, followers, imageurl, profileurl,
   },
 }) => {
   const emailExists = await User.query().findOne({ email })
@@ -40,12 +41,16 @@ const register = async (_obj, {
   const user = await User.query().insertAndFetch({
     email,
     password: passwordHash,
+    username,
     firstName,
     lastName,
     birthday,
     phoneNumber,
     age,
     bio,
+    followers,
+    imageurl,
+    profileurl,
   })
 
   // If successful registration, set authentication information
