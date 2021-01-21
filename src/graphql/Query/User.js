@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const User = require('../../models/User')
 const Usersong = require('../../models/Usersong')
 const Userartist = require('../../models/Userartist')
@@ -9,7 +10,7 @@ const allUsers = async () => {
     const allusers = await User.query()
     return allusers
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     throw new Error('Failed to get all users')
   }
 }
@@ -22,8 +23,8 @@ const userSongsById = async (_obj, { id }, context) => {
 
     return personSongs
   } catch (err) {
-    console.log(err)
-    throw new Error('Failed to user songs')
+    // console.log(err)
+    throw new Error('Failed to get user songs')
   }
 }
 
@@ -35,8 +36,8 @@ const userArtistsById = async (_obj, { id }, context) => {
 
     return personArtists
   } catch (err) {
-    console.log(err)
-    throw new Error('Failed to user artists')
+    // console.log(err)
+    throw new Error('Failed to get user artists')
   }
 }
 
@@ -44,10 +45,9 @@ const userArtistsById = async (_obj, { id }, context) => {
 const userGenresById = async (_obj, { id }, context) => {
   try {
     const personGenres = await Usergenre.query().where('userId', id)
-
     return personGenres
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     throw new Error('Failed to user genres')
   }
 }
