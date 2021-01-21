@@ -5,12 +5,6 @@ class Usergenre extends BaseModel {
   static get tableName() {
     return 'usergenres'
   }
-
-  static get relationMappings() {
-    return {
-
-    }
-  }
 }
 
 module.exports = Usergenre

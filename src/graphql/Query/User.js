@@ -3,6 +3,7 @@ const User = require('../../models/User')
 const Usersong = require('../../models/Usersong')
 const Userartist = require('../../models/Userartist')
 const Usergenre = require('../../models/Usergenre')
+const Match = require('../../models/Match')
 
 // query to display all users
 const allUsers = async () => {
@@ -12,6 +13,15 @@ const allUsers = async () => {
   } catch (err) {
     // console.log(err)
     throw new Error('Failed to get all users')
+  }
+}
+
+const userById = async (_obj, { id }, context) => {
+  try {
+    const user = await User.query().findOne('id', id)
+    return user
+  } catch (err) {
+    throw new Error('Could not find user')
   }
 }
 
@@ -48,17 +58,50 @@ const userGenresById = async (_obj, { id }, context) => {
     return personGenres
   } catch (err) {
     // console.log(err)
-    throw new Error('Failed to user genres')
+    throw new Error('Failed to get user genres')
   }
+}
+
+const userMatches = async (_obj, { id }, context) => {
+  try {
+    const matching = await Match.query().where('user1Id', id)
+    const matched = await Match.query().where('user2Id', id)
+    return matching + matched
+  } catch (err) {
+    throw new Error('Could not get matches')
+  }
+}
+
+// These are alternate implementations of the above functions
+// Probably won't need to use them
+const songs = async ({ id }, params, context) => {
+  const s = await Usersong.query().where('userId', id)
+  return s
+}
+
+const artists = async ({ id }, params, context) => {
+  const a = await Userartist.query().where('userId', id)
+  return a
+}
+
+const genres = async ({ id }, params, context) => {
+  const g = await Usergenre.query().where('userId', id)
+  return g
 }
 
 const resolver = {
   Query: {
     allUsers,
+    userById,
     userSongsById,
     userArtistsById,
     userGenresById,
+    userMatches,
   },
-
+  User: {
+    songs,
+    artists,
+    genres,
+  },
 }
 module.exports = resolver
