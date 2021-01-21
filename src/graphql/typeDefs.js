@@ -6,6 +6,8 @@ module.exports = gql`
     register(input: AddUserInput!): AuthReturn!
     addArtist(input: AddArtistInput!): Artist!
     addSong(input: AddSongInput!): Song!
+    addUserArtist(userId: ID!, artistId: ID!): Userartist!
+
     # this is redundant, same purpose as register
     addUser(input: AddUserInput!): User!
   }
@@ -19,16 +21,18 @@ module.exports = gql`
     userSongsById(id: ID!): [Usersong!]!
     userArtistsById(id: ID!): [Userartist!]!
     userGenresById(id: ID!): [Usergenre!]!
-    userMatches(id: ID!): [User!]
+    userMatches(id: ID!): [Match!]
 
     allSongs: [Song!]!
     songById(id: ID!): Song!
-    usersLikingSong(id: ID!): [ID!]
+    usersLikingSong(id: ID!): [Usersong!]
 
     allArtists: [Artist!]!
     artistById(id: ID!): Artist!
-    usersLikingArtist(id: ID!): [ID!]
+    usersLikingArtist(id: ID!): [Userartist!]
     songsByArtist(id: ID!): [Song!] 
+
+    usersLikingGenre(genre: String!): [Usergenre!]!
   }
 
   type User {
@@ -41,9 +45,15 @@ module.exports = gql`
     phoneNumber: String
     age: Int
     bio: String
-    songs: [Song!]
-    artists: [Artist!]
-    genres: [String!]
+    songs: [Usersong!]
+    artists: [Userartist!]
+    genres: [Usergenre!]
+  }
+
+  type Match {
+    id: ID!
+    user1Id: ID!
+    user2Id: ID!
   }
 
   input AddUserInput {
@@ -57,7 +67,7 @@ module.exports = gql`
     bio: String
   }
 
-  type Usersong {
+  type Usersong{
     id: ID!
     userId: ID!
     songId: ID!
@@ -72,7 +82,7 @@ module.exports = gql`
   type Usergenre {
     id: ID!
     userId: ID!
-    genre: ID!
+    genre: String!
   }
 
   type Song {

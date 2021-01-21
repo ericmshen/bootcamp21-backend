@@ -1,0 +1,178 @@
+example queries
+
+QUERIES: 
+get user's favorite artists' IDs
+query userIds($id: ID!) {
+  userArtistsById(id: $id) {
+    artistId
+  }
+}
+{
+  "id": find an id
+}
+
+get all users, their info, and IDs of their favorite songs/artists/genres
+query allusers {
+  allUsers {
+    email,
+    firstName,
+    lastName,
+    songs {
+      songId
+    }
+    artists {
+      artistId
+    }
+    genres {
+      genre
+    }
+  }
+}
+
+get the users that matched with a specific user
+query userMatches($id: ID!) {
+  userMatches(id: $id) {
+    user1Id 
+    user2Id 
+  }
+}
+{
+  "id": find an id
+}
+
+get an artist's songs by ID
+query artistId($id: ID!) {
+	songsByArtist(id: $id) {
+    title
+  }
+}
+{
+  "id": find an id
+}
+
+get all artists and their songs' details
+query allArtists {
+  allArtists {
+    name
+    songs {
+      title
+      genre
+    }
+  }
+}
+
+get all songs and their details
+query allSongs {
+  allSongs {
+    title
+    genre 
+    artist {
+      name
+    }
+  }
+}
+
+get users (their IDs) liking a specific song by ID
+query userslikingsong($id: ID!) {
+  usersLikingSong(id: $id) {
+    userId
+  }
+}
+{
+  "id": find an id
+}
+
+get users (their IDs) liking a specific genre by ID
+query userslikinggenre($genre: String!) {
+  usersLikingGenre(genre: $genre) {
+    userId
+  }
+}
+{
+  "id": find an id
+}
+
+
+
+MUTATIONS 
+add an artist
+mutation addartist($input: AddArtistInput!) {
+  addArtist(input: $input) {
+    id,
+    name
+  }
+}
+{
+  "input": {
+    "name": name
+  }
+}
+
+add a song
+mutation addsong($input: AddSongInput!) {
+  addSong(input: $input) {
+		id,
+    title,
+    artist {
+      name
+    }
+    genre,
+  }
+}
+{
+  "input": {
+    "title": title
+    "artistId": find an id
+    "genre": find a genre
+  }
+}
+
+register a user
+mutation register($input: AddUserInput!) {
+  register(input: $input) {
+		token,
+    user {
+      firstName,
+      lastName
+    }
+  }
+}
+{
+  "input": {
+    "email": "bob@joe.com",
+    "password": "password123",
+    "firstName": "Bob",
+    "lastName": "Joe",
+    "phoneNumber": "1234567890",
+    "age": 69,
+    "bio": "Based"
+  }
+}
+
+login with the above info
+mutation login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+		token,
+    user {
+      firstName,
+      lastName
+    }
+  }
+}
+{
+  "email": "bob@joe.com",
+  "password": "password123"
+}
+
+given user and artist IDs, make artist a user favorite
+mutation adduserartist($userId: ID!, $artistId: ID!) {
+  addUserArtist(userId: $userId, artistId: $artistId) {
+		id,
+    userId,
+    artistId
+  }
+}
+{
+  "userId": find an id
+  "artistId": find an id
+}

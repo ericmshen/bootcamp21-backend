@@ -66,16 +66,25 @@ const userMatches = async (_obj, { id }, context) => {
   try {
     const matching = await Match.query().where('user1Id', id)
     const matched = await Match.query().where('user2Id', id)
-    return matching + matched
+    return matching.concat(matched)
   } catch (err) {
     throw new Error('Could not get matches')
+  }
+}
+
+const usersLikingGenre = async (_obj, { genre }, context) => {
+  try {
+    const users = await Usergenre.query().where('genre', genre)
+    return users
+  } catch (err) {
+    throw new Error('Could not get users')
   }
 }
 
 // These are alternate implementations of the above functions
 // Probably won't need to use them
 const songs = async ({ id }, params, context) => {
-  const s = await Usersong.query().where('userId', id)
+  const s = await Usersong.query().select('songId').where('userId', id)
   return s
 }
 
@@ -85,7 +94,7 @@ const artists = async ({ id }, params, context) => {
 }
 
 const genres = async ({ id }, params, context) => {
-  const g = await Usergenre.query().where('userId', id)
+  const g = await Usergenre.query().select('genre').where('userId', id)
   return g
 }
 
@@ -97,6 +106,7 @@ const resolver = {
     userArtistsById,
     userGenresById,
     userMatches,
+    usersLikingGenre,
   },
   User: {
     songs,

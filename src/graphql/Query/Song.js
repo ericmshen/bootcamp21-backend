@@ -34,7 +34,7 @@ const usersLikingSong = async (_obj, { id }, context) => {
 }
 
 const artist = async ({ artistId }, params, context) => {
-  const a = await Artist.findOne().where('id', artistId)
+  const a = await Artist.query().findOne('id', artistId)
   return a
 }
 
