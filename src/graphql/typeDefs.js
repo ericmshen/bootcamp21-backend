@@ -7,6 +7,8 @@ module.exports = gql`
     addArtist(input: AddArtistInput!): Artist!
     addSong(input: AddSongInput!): Song!
     addUserArtist(userId: ID!, artistId: ID!): Userartist!
+    addUserSong(userId: ID!, songId: ID!): Usersong!
+    addUserGenre(userId: ID!, genre: String!): Usergenre!
 
     # this is redundant, same purpose as register
     addUser(input: AddUserInput!): User!

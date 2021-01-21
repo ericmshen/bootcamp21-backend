@@ -1,5 +1,4 @@
 const Artist = require('../../models/Artist')
-const Userartist = require('../../models/Userartist')
 
 const addArtist = async (_obj, {
   input: {
@@ -12,21 +11,9 @@ const addArtist = async (_obj, {
   return add
 }
 
-const addUserArtist = async (_obj, {
-  userId,
-  artistId,
-}) => {
-  const add = await Userartist.query().insertAndFetch({
-    userId,
-    artistId,
-  }).returning('*')
-  return add
-}
-
 const resolver = {
   Mutation: {
     addArtist,
-    addUserArtist,
   },
 }
 
