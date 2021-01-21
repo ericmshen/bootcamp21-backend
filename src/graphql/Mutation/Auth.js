@@ -9,11 +9,12 @@ const login = async (_obj, { email, password }) => {
     email,
   })
   if (!user) {
-    throw new UserInputError('Invalid email or password')
+    throw new UserInputError('Could not find email')
   }
-
   const validPassword = await comparePassword(password, user.password)
   if (!validPassword) {
+  // if (password !== user.password) {
+  // for testing seed data^
     throw new UserInputError('Invalid email or password')
   }
 
