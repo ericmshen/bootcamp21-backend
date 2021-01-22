@@ -6,8 +6,8 @@ module.exports = gql`
     register(input: AddUserInput! ): AuthReturn!
     addArtist(input: AddArtistInput!): Artist!
     addSong(input: AddSongInput!): Song!
-    addUserArtist(userId: ID!, artistId: ID!): Userartist!
-    addUserSong(userId: ID!, songId: ID!): Usersong!
+    addUserArtist(userId: ID!, artistId: String!): Userartist!
+    addUserSong(userId: ID!, songId: String!): Usersong!
     addUserGenre(userId: ID!, genre: String!): Usergenre!
     modifyUser(input: ModifyUserInput!): User!
 
@@ -28,13 +28,13 @@ module.exports = gql`
     userLikedSongNames(id: ID!): [Song!]!
 
     allSongs: [Song!]!
-    songById(id: ID!): Song!
-    usersLikingSong(id: ID!): [String!]
+    songById(id: String!): Song!
+    usersLikingSong(id: String!): [String!]
 
     allArtists: [Artist!]!
-    artistById(id: ID!): Artist!
-    usersLikingArtist(id: ID!): [Userartist!]
-    songsByArtist(id: ID!): [Song!] 
+    artistById(id: String!): Artist!
+    usersLikingArtist(id: String!): [Userartist!]
+    songsByArtist(id: String!): [Song!] 
 
     usersLikingGenre(genre: String!): [Usergenre!]!
 
@@ -114,13 +114,13 @@ module.exports = gql`
   type Usersong {
     id: ID!
     userId: ID!
-    songId: ID!
+    songId: String!
   }
 
   type Userartist {
     id: ID!
     userId: ID!
-    artistId: ID!
+    artistId: String!
   }
 
   type Usergenre {
@@ -129,17 +129,16 @@ module.exports = gql`
     genre: String!
   }
 
-
   type Song {
-    id: ID!
+    id: String!
     title: String!
-    artistId: ID!
+    artistId: ID
     artist: Artist
     genre: String
   }
 
   input AddSongInput {
-    id: ID!
+    id: String!
     title: String!
     artistId: ID
     genre: String

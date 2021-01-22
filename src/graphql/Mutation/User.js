@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 const { UserInputError } = require('apollo-server-express')
@@ -111,42 +112,28 @@ const registerWithData = async (_obj, {
   }
   const token = createToken(payload)
 
-  console.log('before song loop')
   for (let i = 0; i < songs.length; i++) {
-    console.log(songs[i])
+    const {
+      id, title, artistId, genre,
+    } = songs[i]
+    const foundSong = await Song.query().where('id', id)
+
+    const userId = user.id
+
+    if (foundSong.length === 0) {
+      // add to Song database
+      console.log('adding to DATABASE')
+      const addedSong = await addSong(_obj, {
+        input: {
+          id, title, artistId, genre,
+        },
+      })
+      const newSong = await addUserSong(_obj, { userId, songId: id })
+    } else {
+      const songId = foundSong.id
+      const newSong = await addUserSong(_obj, { userId, songId })
+    }
   }
-  // songs.forEach(({
-  //   id, title, artistId, genre,
-  // }) => {
-  //   console.log('here is song data')
-  //   console.log(id, title, artistId, genre)
-  //   console.log('that was song data')
-  //   const temp = async () => {
-  //     const foundSong = await Song.query().where('id', id)
-  //     return foundSong
-  //   }
-
-  //   const foundSong = temp()
-
-  //   console.log('temp results')
-  //   console.log(temp())
-  //   console.log(foundSong)
-
-  //   const userId = user.id
-
-  //   if (!foundSong) {
-  //     // add to Song database
-  //     console.log('adding to DATABASE')
-  //     const addedSong = addSong({
-  //       id, title, artistId, genre,
-  //     })
-  //     const newSong = addUserSong({ userId, id })
-  //   } else {
-  //     const songId = foundSong.id
-  //     const newSong = addUserSong({ userId, songId })
-  //   }
-  // })
-
   return { user, token }
 }
 
@@ -161,4 +148,3 @@ const resolver = {
 }
 
 module.exports = resolver
-

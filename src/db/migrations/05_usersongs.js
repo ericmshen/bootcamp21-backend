@@ -14,7 +14,7 @@ exports.up = async knex => createTableIfNotExists(knex, 'usersongs', table => {
     .onDelete('CASCADE')
 
   table
-    .uuid('songId')
+    .string('songId')
     .references('songs.id')
     .onUpdate('CASCADE')
     .onDelete('CASCADE')

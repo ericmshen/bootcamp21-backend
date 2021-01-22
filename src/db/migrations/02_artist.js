@@ -2,7 +2,7 @@ const { createTableIfNotExists } = require('../helpers')
 
 exports.up = async knex => createTableIfNotExists(knex, 'artists', table => {
   table
-    .uuid('id')
+    .string('id')
     .notNullable()
     .primary()
     .defaultTo(knex.raw('uuid_generate_v4()'))

@@ -14,7 +14,7 @@ exports.up = async knex => createTableIfNotExists(knex, 'userartists', table => 
     .onDelete('CASCADE')
 
   table
-    .uuid('artistId')
+    .string('artistId')
     .references('artists.id')
     .onUpdate('CASCADE')
     .onDelete('CASCADE')
