@@ -1,9 +1,14 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+const { UserInputError } = require('apollo-server-express')
 const User = require('../../models/User')
 const Userartist = require('../../models/Userartist')
 const Usersong = require('../../models/Usersong')
 const Usergenre = require('../../models/Usergenre')
 const Song = require('../../models/Song')
-const { decodeToken } = require('../../lib/auth')
+const {
+  hashPassword, createToken, decodeToken,
+} = require('../../lib/auth')
 
 // adding song
 const addSong = async (_obj, {
@@ -20,8 +25,6 @@ const addSong = async (_obj, {
   return add
 }
 
-/// /
-
 const modifyUser = async (_obj, {
   input: {
     token, password, firstName, lastName, birthday,
@@ -29,9 +32,10 @@ const modifyUser = async (_obj, {
   },
 }) => {
   const decoded = decodeToken(token).payload.id
+  const passwordHash = await hashPassword(password)
 
   const update = await User.query().patchAndFetchById(decoded, {
-    password,
+    password: passwordHash,
     firstName,
     lastName,
     birthday,
@@ -53,14 +57,14 @@ const addUserArtist = async (_obj, {
   return add
 }
 
-const addUserSong = async (_obj,
+const addUserSong = async (_obj, {
   userId,
   songId,
-) => {
-  const add = await Usersong.query().insertAndFetch(
+}) => {
+  const add = await Usersong.query().insertAndFetch({
     userId,
     songId,
-  ).returning('*')
+  }).returning('*')
   return add
 }
 
@@ -75,35 +79,80 @@ const addUserGenre = async (_obj, {
   return add
 }
 
-// I believe this serves the same function as register in Auth.js
-// const addUser = async (_obj, {
-//   input: {
-//     email, password, username, firstName, lastName, birthday,
-//     phoneNumber, age, bio, followers, imageurl, profileurl, songs,
-//   },
-// }) => {
-//   const add = await User.query().insertAndFetch({
-//     email,
-//     password,
-//     username,
-//     firstName,
-//     lastName,
-//     birthday,
-//     phoneNumber,
-//     age,
-//     bio,
-//     followers,
-//     imageurl,
-//     profileurl,
-//   }).returning('*')
+// Same as register, but also adds user's favorite songs
+const registerWithData = async (_obj, {
+  input: {
+    email, password, username, firstName, lastName, birthday,
+    phoneNumber, age, bio, followers, imageurl, profileurl, songs,
+  },
+}) => {
+  const emailExists = await User.query().findOne({ email })
+  if (emailExists) {
+    throw new UserInputError('Email is already in use')
+  }
+  const passwordHash = await hashPassword(password)
+  const user = await User.query().insertAndFetch({
+    email,
+    password: passwordHash,
+    username,
+    firstName,
+    lastName,
+    birthday,
+    phoneNumber,
+    age,
+    bio,
+    followers,
+    imageurl,
+    profileurl,
+  })
 
+  const payload = {
+    id: user.id,
+  }
+  const token = createToken(payload)
 
+  console.log('before song loop')
+  for (let i = 0; i < songs.length; i++) {
+    console.log(songs[i])
+  }
+  // songs.forEach(({
+  //   id, title, artistId, genre,
+  // }) => {
+  //   console.log('here is song data')
+  //   console.log(id, title, artistId, genre)
+  //   console.log('that was song data')
+  //   const temp = async () => {
+  //     const foundSong = await Song.query().where('id', id)
+  //     return foundSong
+  //   }
 
-//   return add
-// }
+  //   const foundSong = temp()
+
+  //   console.log('temp results')
+  //   console.log(temp())
+  //   console.log(foundSong)
+
+  //   const userId = user.id
+
+  //   if (!foundSong) {
+  //     // add to Song database
+  //     console.log('adding to DATABASE')
+  //     const addedSong = addSong({
+  //       id, title, artistId, genre,
+  //     })
+  //     const newSong = addUserSong({ userId, id })
+  //   } else {
+  //     const songId = foundSong.id
+  //     const newSong = addUserSong({ userId, songId })
+  //   }
+  // })
+
+  return { user, token }
+}
 
 const resolver = {
   Mutation: {
+    registerWithData,
     modifyUser,
     addUserArtist,
     addUserSong,
@@ -112,3 +161,4 @@ const resolver = {
 }
 
 module.exports = resolver
+

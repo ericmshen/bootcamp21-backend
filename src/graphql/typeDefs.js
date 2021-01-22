@@ -11,8 +11,8 @@ module.exports = gql`
     addUserGenre(userId: ID!, genre: String!): Usergenre!
     modifyUser(input: ModifyUserInput!): User!
 
-    # this is redundant, same purpose as register
-    # registerWithData(input: AddUserWithDataInput!): AuthReturn!
+    # Register with songs
+    registerWithData(input: AddUserWithDataInput!): AuthReturn!
   }
 
   type Query {
@@ -101,7 +101,7 @@ module.exports = gql`
   }
 
   input ModifyUserInput {
-    id: ID!
+    token: String!
     password: String
     firstName: String
     lastName: String
