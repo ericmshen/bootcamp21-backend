@@ -23,18 +23,18 @@ class User extends BaseModel {
           to: 'songs.id',
         },
       },
-      // artists: {
-      //   relation: ManyToManyRelation,
-      //   modelClass: Artist,
-      //   join: {
-      //     from: 'users.id',
-      //     through: {
-      //       from: 'userartists.userId',
-      //       to: 'userartists.artistId',
-      //     },
-      //     to: 'artists.id',
-      //   },
-      // },
+      favArtists: {
+        relation: ManyToManyRelation,
+        modelClass: Artist,
+        join: {
+          from: 'users.id',
+          through: {
+            from: 'userartists.userId',
+            to: 'userartists.artistId',
+          },
+          to: 'artists.id',
+        },
+      },
       // matches: {
       //   relation: ManyToManyRelation,
       //   modelClass: User,

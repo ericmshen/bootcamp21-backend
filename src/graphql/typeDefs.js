@@ -26,6 +26,7 @@ module.exports = gql`
     userGenresById(id: ID!): [Usergenre!]!
     userMatches(id: ID!): [Match!]
     userLikedSongNames(id: ID!): [Song!]!
+    userFavArtistNames(id: ID!): [Artist!]!
 
     allSongs: [Song!]!
     songById(id: String!): Song!

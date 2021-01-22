@@ -66,6 +66,20 @@ const userLikedSongNames = async (_obj, { id }, context) => {
   }
 }
 
+const userFavArtistNames = async (_obj, { id }, context) => {
+  try {
+    const favoriteArt = await User.query()
+      .withGraphFetched('favArtists')
+      .findOne('id', id)
+
+    console.log(favoriteArt.favArtists)
+    return favoriteArt.favArtists
+  } catch (err) {
+    // console.log(err)
+    throw new Error('Failed to get user songs')
+  }
+}
+
 // query to get a list of artists liked by users
 const userArtistsById = async (_obj, { id }, context) => {
   try {
@@ -137,6 +151,7 @@ const resolver = {
     usersLikingGenre,
     userByToken,
     userLikedSongNames,
+    userFavArtistNames,
   },
   User: {
     songs,
