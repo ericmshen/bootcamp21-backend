@@ -96,8 +96,8 @@ module.exports = gql`
     followers: Int
     imageurl: String
     profileurl: String
-    songs: [AddSongInput]!
-    artists: [AddArtistInput!]!
+    songs: [AddSongInput]
+    artists: [AddArtistInput!]
     # genres: [Usergenre!]!
   }
 
