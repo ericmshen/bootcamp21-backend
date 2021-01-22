@@ -11,9 +11,8 @@ module.exports = gql`
     addUserGenre(userId: ID!, genre: String!): Usergenre!
     modifyUser(input: ModifyUserInput!): User!
 
-
     # this is redundant, same purpose as register
-    addUser(input: AddUserInput!): User!
+    # registerWithData(input: AddUserWithDataInput!): AuthReturn!
   }
 
   type Query {
@@ -26,6 +25,7 @@ module.exports = gql`
     userArtistsById(id: ID!): [Userartist!]!
     userGenresById(id: ID!): [Usergenre!]!
     userMatches(id: ID!): [Match!]
+    userLikedSongNames(id: ID!): [Song!]!
 
     allSongs: [Song!]!
     songById(id: ID!): Song!
@@ -80,10 +80,24 @@ module.exports = gql`
     followers: Int
     imageurl: String
     profileurl: String
-    songs: [SongInput]!
+  }
+
+  input AddUserWithDataInput {
+    email: String!
+    username: String!
+    password: String
+    firstName: String
+    lastName: String
+    birthday: Date
+    phoneNumber: String
+    age: Int
+    bio: String
+    followers: Int
+    imageurl: String
+    profileurl: String
+    songs: [AddSongInput]!
     # artists: [Userartist!]!
     # genres: [Usergenre!]!
-
   }
 
   input ModifyUserInput {
@@ -124,18 +138,10 @@ module.exports = gql`
     genre: String
   }
 
-  input SongInput {
-  
-    title: String
-    artistId: ID
-    artist: ArtistInput
-    genre: String
-  }
-
   input AddSongInput {
     id: ID!
     title: String!
-    artistId: ID!
+    artistId: ID
     genre: String
   }
 
@@ -148,7 +154,7 @@ module.exports = gql`
   input ArtistInput {
     id: ID!
     name: String!
-    songs: [SongInput!]
+    songs: [AddSongInput!]
   }
 
   input AddArtistInput {

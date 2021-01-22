@@ -155,6 +155,35 @@ mutation register($input: AddUserInput!) {
   }
 }
 
+mutation register($input: AddUserInput!) {
+  addUser(input: $input) {
+      firstName,
+      lastName
+    
+  }
+}
+
+{
+  "input": {
+  
+    "email": "version12903@gmail.com",
+    "username": "pleaseworkv1.0",
+    "password": "password123",
+    "firstName": "NEW",
+    "lastName": "ONE",
+    "phoneNumber": "1234567890",
+    "age": 69,
+    "bio": "Based",
+    "songs": [
+      {
+        "id": "198728354385ewufha",
+        "title": "NEWEST SONG"
+      }
+    ]
+  }
+}
+
+
 login with the above info
 mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

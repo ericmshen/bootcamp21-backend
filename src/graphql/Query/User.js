@@ -4,6 +4,7 @@ const Usersong = require('../../models/Usersong')
 const Userartist = require('../../models/Userartist')
 const Usergenre = require('../../models/Usergenre')
 const Match = require('../../models/Match')
+const Song = require('../../models/Song')
 
 const { decodeToken } = require('../../lib/auth')
 
@@ -44,6 +45,21 @@ const userSongsById = async (_obj, { id }, context) => {
     const personSongs = await Usersong.query().where('userId', id)
 
     return personSongs
+  } catch (err) {
+    // console.log(err)
+    throw new Error('Failed to get user songs')
+  }
+}
+
+// get the titles of the songs liked by users
+// NOTE: id is userIds
+const userLikedSongNames = async (_obj, { id }, context) => {
+  try {
+    const newList = await User.query()
+      .withGraphFetched('songs')
+      .findOne('id', id)
+
+    return newList.songs
   } catch (err) {
     // console.log(err)
     throw new Error('Failed to get user songs')
@@ -120,6 +136,7 @@ const resolver = {
     userMatches,
     usersLikingGenre,
     userByToken,
+    userLikedSongNames,
   },
   User: {
     songs,

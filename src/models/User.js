@@ -1,7 +1,8 @@
 const BaseModel = require('./BaseModel')
 const { ManyToManyRelation } = require('./BaseModel')
-const Usersong = require('./Usersong')
+const Song = require('./Song')
 const Artist = require('./Artist')
+
 
 class User extends BaseModel {
   static get tableName() {
@@ -12,7 +13,7 @@ class User extends BaseModel {
     return {
       songs: {
         relation: ManyToManyRelation,
-        modelClass: Usersong,
+        modelClass: Song,
         join: {
           from: 'users.id',
           through: {
@@ -22,30 +23,31 @@ class User extends BaseModel {
           to: 'songs.id',
         },
       },
-      artists: {
-        relation: ManyToManyRelation,
-        modelClass: Artist,
-        join: {
-          from: 'users.id',
-          through: {
-            from: 'userartists.userId',
-            to: 'userartists.artistId',
-          },
-          to: 'artists.id',
-        },
-      },
-      matches: {
-        relation: ManyToManyRelation,
-        modelClass: User,
-        join: {
-          from: 'users.id',
-          through: {
-            from: 'matches.user1Id',
-            to: 'matches.user2Id',
-          },
-          to: 'users.id',
-        },
-      },
+      // artists: {
+      //   relation: ManyToManyRelation,
+      //   modelClass: Artist,
+      //   join: {
+      //     from: 'users.id',
+      //     through: {
+      //       from: 'userartists.userId',
+      //       to: 'userartists.artistId',
+      //     },
+      //     to: 'artists.id',
+      //   },
+      // },
+      // matches: {
+      //   relation: ManyToManyRelation,
+      //   modelClass: User,
+      //   join: {
+      //     from: 'users.id',
+      //     through: {
+      //       from: 'matches.user1Id',
+      //       to: 'matches.user2Id',
+      //     },
+      //     to: 'users.id',
+      //   },
+      // },
+
     }
   }
 }

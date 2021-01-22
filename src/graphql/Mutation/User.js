@@ -53,14 +53,14 @@ const addUserArtist = async (_obj, {
   return add
 }
 
-const addUserSong = async (_obj, {
+const addUserSong = async (_obj,
   userId,
   songId,
-}) => {
-  const add = await Usersong.query().insertAndFetch({
+) => {
+  const add = await Usersong.query().insertAndFetch(
     userId,
     songId,
-  }).returning('*')
+  ).returning('*')
   return add
 }
 
@@ -76,58 +76,34 @@ const addUserGenre = async (_obj, {
 }
 
 // I believe this serves the same function as register in Auth.js
-const addUser = async (_obj, {
-  input: {
-    email, password, username, firstName, lastName, birthday,
-    phoneNumber, age, bio, followers, imageurl, profileurl, songs,
-  },
-}) => {
-  const add = await User.query().insertAndFetch({
-    email,
-    password,
-    username,
-    firstName,
-    lastName,
-    birthday,
-    phoneNumber,
-    age,
-    bio,
-    followers,
-    imageurl,
-    profileurl,
-  }).returning('*')
-
-  // call usersongs/userartists mutations
-  // did not add to song database
-  console.log("before song loop")
-  songs.forEach(element => {
-    const temp = async () => {
-      const foundSong = await Song.query().where('id', element.songId)
-      return foundSong
-    }
-
-    console.log("here in loop")
-    console.log(temp())
-
-    if (temp() === null) {
-      // add to Song database
-      console.log("adding to DATABASE")
-      const addedSong = addSong(element.id, element.title, element.artistId, element.genre)
-      const newSong = addUserSong(add.id, addedSong.songId)
-    } else {
-      const newSong = addUserSong(add.id, temp().songId)
-    }
-
-    // create the new usersong relation
-  })
+// const addUser = async (_obj, {
+//   input: {
+//     email, password, username, firstName, lastName, birthday,
+//     phoneNumber, age, bio, followers, imageurl, profileurl, songs,
+//   },
+// }) => {
+//   const add = await User.query().insertAndFetch({
+//     email,
+//     password,
+//     username,
+//     firstName,
+//     lastName,
+//     birthday,
+//     phoneNumber,
+//     age,
+//     bio,
+//     followers,
+//     imageurl,
+//     profileurl,
+//   }).returning('*')
 
 
-  return add
-}
+
+//   return add
+// }
 
 const resolver = {
   Mutation: {
-    addUser,
     modifyUser,
     addUserArtist,
     addUserSong,
