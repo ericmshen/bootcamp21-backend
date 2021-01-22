@@ -133,7 +133,7 @@ module.exports = gql`
   type Song {
     id: String!
     title: String!
-    artistId: ID
+    artistId: String
     artist: Artist
     genre: String
   }
@@ -141,19 +141,18 @@ module.exports = gql`
   input AddSongInput {
     id: String!
     title: String!
-    artistId: ID
+    artistId: String
     genre: String
   }
 
   type Artist {
-    id: ID!
+    id: String
     name: String!
     songs: [Song!]
   }
 
-
   input AddArtistInput {
-    id: ID
+    id: String
     name: String!
   }
 

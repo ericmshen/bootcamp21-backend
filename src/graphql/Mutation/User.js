@@ -28,10 +28,18 @@ const addSong = async (_obj, {
   return add
 }
 
-
-
-
-
+const addArtist = async (_obj, {
+  input: {
+    id,
+    name,
+  },
+}) => {
+  const add = await Artist.query().insertAndFetch({
+    id,
+    name,
+  }).returning('*')
+  return add
+}
 
 const modifyUser = async (_obj, {
   input: {
@@ -87,11 +95,12 @@ const addUserGenre = async (_obj, {
   return add
 }
 
-// Same as register, but also adds user's favorite songs
+// Same as register, but also adds user's favorite songs and artists
 const registerWithData = async (_obj, {
   input: {
     email, password, username, firstName, lastName, birthday,
-    phoneNumber, age, bio, followers, imageurl, profileurl, songs,artists,
+    phoneNumber, age, bio, followers, imageurl, profileurl,
+    songs, artists,
   },
 }) => {
   const emailExists = await User.query().findOne({ email })
@@ -118,7 +127,7 @@ const registerWithData = async (_obj, {
     id: user.id,
   }
   const token = createToken(payload)
-
+  const userId = user.id
 
   // for inserting songs during registration
   for (let i = 0; i < songs.length; i++) {
@@ -126,8 +135,6 @@ const registerWithData = async (_obj, {
       id, title, artistId, genre,
     } = songs[i]
     const foundSong = await Song.query().where('id', id)
-
-    const userId = user.id
 
     if (foundSong.length === 0) {
       // add to Song database
@@ -144,7 +151,6 @@ const registerWithData = async (_obj, {
     }
   }
 
-
   // for inserting favorite artists during registration
   for (let i = 0; i < artists.length; i++) {
     const {
@@ -152,22 +158,20 @@ const registerWithData = async (_obj, {
     } = artists[i]
     const foundArtist = await Artist.query().where('id', id)
 
-    const userId = user.id
-
     if (foundArtist.length === 0) {
       // add to Song database
-      console.log('adding to artist databse')
-      const addedArtist = await Artist.query().insertAndFetch({
-        id,
-        name,
-       })
+      // console.log('adding to artist databse')
+      const addedArtist = await addArtist(_obj, {
+        input: {
+          id, name,
+        },
+      })
 
       const newArtist = await addUserArtist(_obj, { userId, artistId: id })
     } else {
       const foundId = foundArtist.id
       const newArtist = await addUserArtist(_obj, { userId, foundId })
     }
-
   }
 
   return { user, token }
