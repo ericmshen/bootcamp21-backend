@@ -152,27 +152,27 @@ const registerWithData = async (_obj, {
   }
 
   // for inserting favorite artists during registration
-  for (let i = 0; i < artists.length; i++) {
-    const {
-      id, name,
-    } = artists[i]
-    const foundArtist = await Artist.query().where('id', id)
+  // for (let i = 0; i < artists.length; i++) {
+  //   const {
+  //     id, name,
+  //   } = artists[i]
+  //   const foundArtist = await Artist.query().where('id', id)
 
-    if (foundArtist.length === 0) {
-      // add to Song database
-      // console.log('adding to artist databse')
-      const addedArtist = await addArtist(_obj, {
-        input: {
-          id, name,
-        },
-      })
+  //   if (foundArtist.length === 0) {
+  //     // add to Song database
+  //     // console.log('adding to artist databse')
+  //     const addedArtist = await addArtist(_obj, {
+  //       input: {
+  //         id, name,
+  //       },
+  //     })
 
-      const newArtist = await addUserArtist(_obj, { userId, artistId: id })
-    } else {
-      const foundId = foundArtist.id
-      const newArtist = await addUserArtist(_obj, { userId, foundId })
-    }
-  }
+  //     const newArtist = await addUserArtist(_obj, { userId, artistId: id })
+  //   } else {
+  //     const foundId = foundArtist.id
+  //     const newArtist = await addUserArtist(_obj, { userId, foundId })
+  //   }
+  // }
 
   return { user, token }
 }
