@@ -7,6 +7,8 @@ const Userartist = require('../../models/Userartist')
 const Usersong = require('../../models/Usersong')
 const Usergenre = require('../../models/Usergenre')
 const Song = require('../../models/Song')
+const Artist = require('../../models/Artist')
+
 const {
   hashPassword, createToken, decodeToken,
 } = require('../../lib/auth')
@@ -25,6 +27,11 @@ const addSong = async (_obj, {
   }).returning('*')
   return add
 }
+
+
+
+
+
 
 const modifyUser = async (_obj, {
   input: {
@@ -84,7 +91,7 @@ const addUserGenre = async (_obj, {
 const registerWithData = async (_obj, {
   input: {
     email, password, username, firstName, lastName, birthday,
-    phoneNumber, age, bio, followers, imageurl, profileurl, songs,
+    phoneNumber, age, bio, followers, imageurl, profileurl, songs,artists,
   },
 }) => {
   const emailExists = await User.query().findOne({ email })
@@ -112,6 +119,8 @@ const registerWithData = async (_obj, {
   }
   const token = createToken(payload)
 
+
+  // for inserting songs during registration
   for (let i = 0; i < songs.length; i++) {
     const {
       id, title, artistId, genre,
@@ -134,6 +143,33 @@ const registerWithData = async (_obj, {
       const newSong = await addUserSong(_obj, { userId, songId })
     }
   }
+
+
+  // for inserting favorite artists during registration
+  for (let i = 0; i < artists.length; i++) {
+    const {
+      id, name,
+    } = artists[i]
+    const foundArtist = await Artist.query().where('id', id)
+
+    const userId = user.id
+
+    if (foundArtist.length === 0) {
+      // add to Song database
+      console.log('adding to artist databse')
+      const addedArtist = await Artist.query().insertAndFetch({
+        id,
+        name,
+       })
+
+      const newArtist = await addUserArtist(_obj, { userId, artistId: id })
+    } else {
+      const foundId = foundArtist.id
+      const newArtist = await addUserArtist(_obj, { userId, foundId })
+    }
+
+  }
+
   return { user, token }
 }
 
