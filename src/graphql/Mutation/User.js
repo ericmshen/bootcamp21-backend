@@ -2,17 +2,35 @@ const User = require('../../models/User')
 const Userartist = require('../../models/Userartist')
 const Usersong = require('../../models/Usersong')
 const Usergenre = require('../../models/Usergenre')
-// const Song = require('../../models/Song')
+const Song = require('../../models/Song')
+const { decodeToken } = require('../../lib/auth')
 
+// adding song
+const addSong = async (_obj, {
+  input: {
+    id, title, artistId, genre,
+  },
+}) => {
+  const add = await Song.query().insertAndFetch({
+    id,
+    title,
+    artistId,
+    genre,
+  }).returning('*')
+  return add
+}
 
+/// /
 
 const modifyUser = async (_obj, {
   input: {
-    id, password, firstName, lastName, birthday,
+    token, password, firstName, lastName, birthday,
     phoneNumber, age, bio,
   },
 }) => {
-  const update = await User.query().patchAndFetchById(id, {
+  const decoded = decodeToken(token).payload.id
+
+  const update = await User.query().patchAndFetchById(decoded, {
     password,
     firstName,
     lastName,
@@ -61,7 +79,7 @@ const addUserGenre = async (_obj, {
 const addUser = async (_obj, {
   input: {
     email, password, username, firstName, lastName, birthday,
-    phoneNumber, age, bio, followers, imageurl, profileurl,
+    phoneNumber, age, bio, followers, imageurl, profileurl, songs,
   },
 }) => {
   const add = await User.query().insertAndFetch({
@@ -81,30 +99,31 @@ const addUser = async (_obj, {
 
   // call usersongs/userartists mutations
   // did not add to song database
-  // songs.forEach(element => {
-  //   const temp = Song.query().where('id', element.songId)
-  //   if (temp){
-  //     // already exists --> just add usersong relation
-  //   } else{
-  //     // add to Song database AND create relation
-  //   }
-  //   const newSong = addUserSong(add.id, element.songId)
-  // })
+  console.log("before song loop")
+  songs.forEach(element => {
+    const temp = async () => {
+      const foundSong = await Song.query().where('id', element.songId)
+      return foundSong
+    }
 
+    console.log("here in loop")
+    console.log(temp())
 
-  // artists.forEach(element => {
-  //   const newSong = addUserSong(add.id, element.songId)
-  // })
+    if (temp() === null) {
+      // add to Song database
+      console.log("adding to DATABASE")
+      const addedSong = addSong(element.id, element.title, element.artistId, element.genre)
+      const newSong = addUserSong(add.id, addedSong.songId)
+    } else {
+      const newSong = addUserSong(add.id, temp().songId)
+    }
 
+    // create the new usersong relation
+  })
 
-  // genres.forEach(element => {
-  //   const newSong = addUserSong(add.id, element.songId)
-  // })
-  
 
   return add
 }
-
 
 const resolver = {
   Mutation: {

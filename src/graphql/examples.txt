@@ -139,13 +139,19 @@ mutation register($input: AddUserInput!) {
 }
 {
   "input": {
-    "email": "bob@joe.com",
+    "email": "pleasework@gmail.com",
+    "username": "WPLEASEWORK",
     "password": "password123",
     "firstName": "Bob",
     "lastName": "Joe",
     "phoneNumber": "1234567890",
     "age": 69,
-    "bio": "Based"
+    "bio": "Based",
+    "songs": [
+      {
+        "title": "NEWEST SONG"
+      }
+    ]
   }
 }
 

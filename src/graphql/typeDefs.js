@@ -3,7 +3,7 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
   type Mutation {
     login(email: String!, password: String!): AuthReturn!
-    register(input: AddUserInput!, ): AuthReturn!
+    register(input: AddUserInput! ): AuthReturn!
     addArtist(input: AddArtistInput!): Artist!
     addSong(input: AddSongInput!): Song!
     addUserArtist(userId: ID!, artistId: ID!): Userartist!
@@ -80,7 +80,7 @@ module.exports = gql`
     followers: Int
     imageurl: String
     profileurl: String
-    # songs: [SongInput]!
+    songs: [SongInput]!
     # artists: [Userartist!]!
     # genres: [Usergenre!]!
 
