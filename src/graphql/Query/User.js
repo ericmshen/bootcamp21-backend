@@ -9,7 +9,7 @@ const { decodeToken } = require('../../lib/auth')
 
 const userByToken = async (_obj, { token }, context) => {
   try {
-    const decoded = decodeToken(token).id
+    const decoded = decodeToken(token).payload.id
     const user = await User.query().findOne('id', decoded)
     return user
   } catch (err) {
