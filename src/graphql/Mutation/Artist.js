@@ -12,9 +12,7 @@ const addArtist = async (_obj, {
 }
 
 const resolver = {
-  Mutation: {
-    addArtist,
-  },
+  Mutation: { addArtist },
 }
 
 module.exports = resolver

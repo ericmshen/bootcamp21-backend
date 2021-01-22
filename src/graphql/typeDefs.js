@@ -3,13 +3,14 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
   type Mutation {
     login(email: String!, password: String!): AuthReturn!
-    register(input: AddUserInput!): AuthReturn!
+    register(input: AddUserInput!, ): AuthReturn!
     addArtist(input: AddArtistInput!): Artist!
     addSong(input: AddSongInput!): Song!
     addUserArtist(userId: ID!, artistId: ID!): Userartist!
     addUserSong(userId: ID!, songId: ID!): Usersong!
     addUserGenre(userId: ID!, genre: String!): Usergenre!
     modifyUser(input: ModifyUserInput!): User!
+
 
     # this is redundant, same purpose as register
     addUser(input: AddUserInput!): User!
@@ -28,7 +29,7 @@ module.exports = gql`
 
     allSongs: [Song!]!
     songById(id: ID!): Song!
-    usersLikingSong(id: ID!): [Usersong!]
+    usersLikingSong(id: ID!): [String!]
 
     allArtists: [Artist!]!
     artistById(id: ID!): Artist!
@@ -36,6 +37,9 @@ module.exports = gql`
     songsByArtist(id: ID!): [Song!] 
 
     usersLikingGenre(genre: String!): [Usergenre!]!
+
+    userByToken(token: String!): User!
+
   }
 
   type User {
@@ -52,9 +56,9 @@ module.exports = gql`
     followers: Int
     imageurl: String
     profileurl: String
-    songs: [Usersong!]
-    artists: [Userartist!]
-    genres: [Usergenre!]
+    songs: [Song!]
+    artists: [Artist!]
+    genres: [String!]
   }
 
   type Match {
@@ -70,12 +74,16 @@ module.exports = gql`
     firstName: String
     lastName: String
     birthday: Date
-    phoneNumber: String!
-    age: Int!
+    phoneNumber: String
+    age: Int
     bio: String
     followers: Int
     imageurl: String
     profileurl: String
+    # songs: [SongInput]!
+    # artists: [Userartist!]!
+    # genres: [Usergenre!]!
+
   }
 
   input ModifyUserInput {
@@ -107,6 +115,7 @@ module.exports = gql`
     genre: String!
   }
 
+
   type Song {
     id: ID!
     title: String!
@@ -115,7 +124,16 @@ module.exports = gql`
     genre: String
   }
 
+  input SongInput {
+  
+    title: String
+    artistId: ID
+    artist: ArtistInput
+    genre: String
+  }
+
   input AddSongInput {
+    id: ID!
     title: String!
     artistId: ID!
     genre: String
@@ -125,6 +143,12 @@ module.exports = gql`
     id: ID!
     name: String!
     songs: [Song!]
+  }
+
+  input ArtistInput {
+    id: ID!
+    name: String!
+    songs: [SongInput!]
   }
 
   input AddArtistInput {

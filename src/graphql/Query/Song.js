@@ -17,6 +17,7 @@ const allSongs = async () => {
 const songById = async (_obj, { id }, context) => {
   try {
     const song = await Song.query().findOne('id', id)
+
     return song
   } catch (err) {
     // console.log(err)
@@ -26,8 +27,14 @@ const songById = async (_obj, { id }, context) => {
 
 const usersLikingSong = async (_obj, { id }, context) => {
   try {
-    const users = await Usersong.query().where('songId', id)
-    return users
+    const usersongs = await Usersong.query().where('songId', id)
+    // users is a list of usersongs
+    // let temp = []
+    // usersongs.forEach(element => {
+    //     const songItem = await Song.query().where('id', element.songId)
+    //     temp = temp.concat(songItem.titles)
+    // })
+    return usersongs
   } catch (err) {
     throw new Error('Could not find users')
   }

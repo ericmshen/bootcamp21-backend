@@ -2,10 +2,11 @@ const Song = require('../../models/Song')
 
 const addSong = async (_obj, {
   input: {
-    title, artistId, genre,
+    id, title, artistId, genre,
   },
 }) => {
   const add = await Song.query().insertAndFetch({
+    id,
     title,
     artistId,
     genre,

@@ -5,6 +5,18 @@ const Userartist = require('../../models/Userartist')
 const Usergenre = require('../../models/Usergenre')
 const Match = require('../../models/Match')
 
+const { decodeToken } = require('../../lib/auth')
+
+const userByToken = async (_obj, { token }, context) => {
+  try {
+    const decoded = decodeToken(token).id
+    const user = await User.query().findOne('id', decoded)
+    return user
+  } catch (err) {
+    throw new Error('Could not decode or find user')
+  }
+}
+
 // query to display all users
 const allUsers = async () => {
   try {
@@ -107,6 +119,7 @@ const resolver = {
     userGenresById,
     userMatches,
     usersLikingGenre,
+    userByToken,
   },
   User: {
     songs,
