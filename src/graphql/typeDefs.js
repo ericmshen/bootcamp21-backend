@@ -9,6 +9,7 @@ module.exports = gql`
     addUserArtist(userId: ID!, artistId: ID!): Userartist!
     addUserSong(userId: ID!, songId: ID!): Usersong!
     addUserGenre(userId: ID!, genre: String!): Usergenre!
+    modifyUser(input: ModifyUserInput!): User!
 
     # this is redundant, same purpose as register
     addUser(input: AddUserInput!): User!
@@ -77,7 +78,18 @@ module.exports = gql`
     profileurl: String
   }
 
-  type Usersong{
+  input ModifyUserInput {
+    id: ID!
+    password: String
+    firstName: String
+    lastName: String
+    birthday: Date
+    phoneNumber: String
+    age: Int
+    bio: String
+  }
+
+  type Usersong {
     id: ID!
     userId: ID!
     songId: ID!

@@ -27,6 +27,24 @@ const addUser = async (_obj, {
   return add
 }
 
+const modifyUser = async (_obj, {
+  input: {
+    id, password, firstName, lastName, birthday,
+    phoneNumber, age, bio,
+  },
+}) => {
+  const update = await User.query().patchAndFetchById(id, {
+    password,
+    firstName,
+    lastName,
+    birthday,
+    phoneNumber,
+    age,
+    bio,
+  }).returning('*')
+  return update
+}
+
 const addUserArtist = async (_obj, {
   userId,
   artistId,
@@ -63,6 +81,7 @@ const addUserGenre = async (_obj, {
 const resolver = {
   Mutation: {
     addUser,
+    modifyUser,
     addUserArtist,
     addUserSong,
     addUserGenre,
